@@ -19,6 +19,9 @@
     "noEmit": true,
     "jsx": "preserve"
   },
+  "files": [
+    "src/index.d.ts"
+  ],
   "include": [
     "src"
   ]
