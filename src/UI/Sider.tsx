@@ -12,7 +12,7 @@ function Sider({ location }: IProps) {
     setIsCollapsed(!isCollapsed);
   }
 
-  const routes: IRoute[] = [
+  const routes: Route[] = [
     {
       icon: 'home',
       label: 'Home',
@@ -32,7 +32,7 @@ function Sider({ location }: IProps) {
         mode="inline"
         selectedKeys={[pathname]}
       >
-        {routes.map((route: IRoute) => (
+        {routes.map((route: Route) => (
           <Menu.Item key={route.path}>
             <Icon type={route.icon} />
             <span>{route.label}</span>

@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { Table } from 'antd';
 
-interface IProps {
-  data: any;
+interface Props {
+  data: any[];
+  columns: TableColumns[];
 }
 
-function Datatable() {
+function Datatable({ data, columns }: Props) {
   return (
-    <div>
-      Datatable
-    </div>
+    <Table dataSource={data} columns={columns} />
   )
 }
 
