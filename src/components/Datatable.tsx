@@ -4,11 +4,12 @@ import { Table } from 'antd';
 interface Props {
   data: any[];
   columns: TableColumns[];
+  loading?: boolean;
 }
 
-function Datatable({ data, columns }: Props) {
+function Datatable({ data = [], columns, loading }: Props) {
   return (
-    <Table dataSource={data} columns={columns} />
+    <Table dataSource={data} columns={columns} loading={loading} />
   )
 }
 

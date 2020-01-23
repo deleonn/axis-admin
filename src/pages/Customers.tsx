@@ -1,57 +1,47 @@
 import * as React from 'react';
 import { Datatable } from '../components';
-import { Card, Row, Button, Col, Icon } from 'antd';
+import { Card, Row, Button, Col, Icon, Spin } from 'antd';
+import { useQuery } from 'urql';
+import gql from 'graphql-tag'
+
+const UsersQuery = gql`
+  query {
+    usersQuery {
+      name
+      email
+      username
+      phone
+    }
+  }
+`;
 
 function Customers() {
-
-  const fakeData: any[] = [
-    {
-      key: '1',
-      name: 'Nombre 1',
-      email: 'correo 1',
-      telephone: '8181818181',
-    },
-    {
-      key: '2',
-      name: 'Nombre 2',
-      email: 'correo 2',
-      telephone: '8181818181',
-    },
-    {
-      key: '3',
-      name: 'Nombre 3',
-      email: 'correo 3',
-      telephone: '8181818181',
-    },
-    {
-      key: '4',
-      name: 'Nombre 4',
-      email: 'correo 4',
-      telephone: '8181818181',
-    },
-    {
-      key: '5',
-      name: 'Nombre 5',
-      email: 'correo 5',
-      telephone: '8181818181',
-    },
-  ];
+  const [res, executeQuery] = useQuery({query: UsersQuery});
+  const refetch = React.useCallback(
+    () => executeQuery({ requestPolicy: 'network-only' }),
+    [executeQuery]
+  );
 
   const columns: TableColumns[] = [
     {
       key: 'name',
       dataIndex: 'name',
-      title: 'Nombre',
+      title: 'Name',
     },
     {
       key: 'email',
       dataIndex: 'email',
-      title: 'Correo',
+      title: 'Email',
     },
     {
-      key: 'telephone',
-      dataIndex: 'telephone',
-      title: 'Teléfono',
+      key: 'username',
+      dataIndex: 'username',
+      title: 'Username',
+    },
+    {
+      key: 'phone',
+      dataIndex: 'phone',
+      title: 'Phone',
     },
   ];
 
@@ -70,11 +60,17 @@ function Customers() {
             New customer
           </Button>
         </Col>
+        <Col>
+          <Button type="primary" onClick={refetch}>
+            <Icon type="sync" />
+            Fetch customers
+          </Button>
+        </Col>
       </Row>
 
       <Row>
         <Card bordered={false}>
-          <Datatable columns={columns} data={fakeData} />
+          <Datatable columns={columns} data={res.data?.usersQuery} loading={res.fetching}/>
         </Card>
       </Row>
     </>
