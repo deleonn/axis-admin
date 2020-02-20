@@ -5,6 +5,7 @@ interface Props {
   data: any[];
   fetching: boolean;
   columns: TableColumns[];
+  loading?: boolean;
 }
 
 function Datatable({ data, columns, fetching }: Props) {

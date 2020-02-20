@@ -85,6 +85,12 @@ function Customers() {
             New customer
           </Button>
         </Col>
+        <Col>
+          {/* <Button type="primary" onClick={refetch}>
+            <Icon type="sync" />
+            Fetch customers
+          </Button> */}
+        </Col>
       </Row>
 
       <Row>
