@@ -22,6 +22,11 @@ function Sider({ location }: IProps) {
       icon: 'user',
       label: 'Customers',
       path: '/customers',
+    },
+    {
+      icon: 'form',
+      label: 'Plans',
+      path: '/plans',
     }
   ]
 

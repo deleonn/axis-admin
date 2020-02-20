@@ -1,58 +1,73 @@
 import * as React from 'react';
 import { Datatable } from '../components';
-import { Card, Row, Button, Col, Icon } from 'antd';
+import { Card, Row, Button, Col, Icon, Divider } from 'antd';
+import { useQuery } from 'urql';
+import { formatPhone } from '../util/helpers';
 
 function Customers() {
+  const [{fetching, data}] = useQuery({
+    query: `
+      {
+        usersQuery {
+          _id
+          name
+          email
+          username
+          role
+          phone
+        }
+      }
+    `,
+  });
 
-  const fakeData: any[] = [
-    {
-      key: '1',
-      name: 'Nombre 1',
-      email: 'correo 1',
-      telephone: '8181818181',
-    },
-    {
-      key: '2',
-      name: 'Nombre 2',
-      email: 'correo 2',
-      telephone: '8181818181',
-    },
-    {
-      key: '3',
-      name: 'Nombre 3',
-      email: 'correo 3',
-      telephone: '8181818181',
-    },
-    {
-      key: '4',
-      name: 'Nombre 4',
-      email: 'correo 4',
-      telephone: '8181818181',
-    },
-    {
-      key: '5',
-      name: 'Nombre 5',
-      email: 'correo 5',
-      telephone: '8181818181',
-    },
-  ];
+  const filteredCustomers = data?.usersQuery
+    .filter((el: User) => el.role === 'USER')
+    .map((el: User) => {
+      return {
+        ...el,
+        key: el._id,
+        phone: formatPhone(el.phone)
+      }
+    });
 
   const columns: TableColumns[] = [
     {
       key: 'name',
       dataIndex: 'name',
-      title: 'Nombre',
+      title: 'Name',
     },
     {
       key: 'email',
       dataIndex: 'email',
-      title: 'Correo',
+      title: 'Email',
     },
     {
-      key: 'telephone',
-      dataIndex: 'telephone',
-      title: 'Teléfono',
+      key: 'username',
+      dataIndex: 'username',
+      title: 'Username',
     },
+    {
+      key: 'phone',
+      dataIndex: 'phone',
+      title: 'Phone number',
+    },
+    {
+      key: 'role',
+      dataIndex: 'role',
+      title: 'Role',
+    },
+    {
+      key: 'action',
+      dataIndex: 'action',
+      title: 'Actions',
+      render: (text: string, record: string) => (
+        <span>
+          <a href="#">Detail</a>
+          <Divider type="vertical" />
+          <a href="#">Delete</a>
+        </span>
+      ),
+    }
   ];
 
   return (
@@ -74,7 +89,7 @@ function Customers() {
 
       <Row>
         <Card bordered={false}>
-          <Datatable columns={columns} data={fakeData} />
+          <Datatable columns={columns} data={filteredCustomers} fetching={fetching} />
         </Card>
       </Row>
     </>
